@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+    image: ices/dotnetapp:latest
+    container_name: dotnetapp
+    restart: unless-stopped
+    ports:
+      - 5083:80
