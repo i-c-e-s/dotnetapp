@@ -1,5 +1,12 @@
 pipeline {
+
+    environment {
+        dockerimagename = "ices/dotnetapp"
+        dockerImage = ""
+    }
+
     agent { label "cobaia-server-aws" }
+
     stages {
         stage ('Clean workspace') {
             steps {
@@ -13,16 +20,34 @@ pipeline {
             }
         }
 
-        stage('Restore packages') {
-            steps {
-                bat "dotnet restore ${workspace}\\<path-to-solution>\\<solution-project-name>.sln"
+        stage('Build image') {
+            steps{
+                script {
+                    dockerImage = docker.build dockerimagename
+                }
             }
         }
 
-        stage('Clean') { 
-            steps { 
-                bat "msbuild.exe ${workspace}\\<path-to-solution\\<solution-project-name>.sln" /nologo /nr:false /p:platform=\ "x64\" /p:configuration=\"release\" /t:clean" 
-            } 
+        stage('Pushing Image') {
+            environment {
+                registryCredential = 'dockerhublogin'
+            }
+
+            steps{
+                script {
+                    docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
+                        dockerImage.push("latest")
+                    }
+                }
+            }
+        }
+
+        stage('Deploying App to Kubernetes') {
+            steps {
+                script {
+                kubernetesDeploy(configs: "deploymentservice.yml", kubeconfigId: "kubernetes")
+                }
+            }
         }
     }
 }
