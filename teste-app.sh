@@ -1,6 +1,6 @@
 #!/bin/bash
-RESULT="'wget -q0- http://locahost:5083/weatherforecast'"
-wget -q locahost:5083/weatherforecast
+RESULT="'wget -qO- http://localhost:5083/weatherforecast'"
+wget -q localhost:5083/weatherforecast
 if [ $? -eq 0 ]
 then
     echo 'ok - serviço no ar!'
