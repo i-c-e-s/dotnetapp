@@ -5,7 +5,7 @@ pipeline {
         dockerImage = ""
     }
 
-    agent { label "Built-In Node" }
+    agent any
 
     options {
         skipDefaultCheckout()
