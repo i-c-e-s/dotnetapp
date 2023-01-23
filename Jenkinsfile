@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage ('Build image') {
             steps{
                 script {
                     dockerImage = docker.build dockerimagename
@@ -31,22 +31,13 @@ pipeline {
         stage ('test image') {
             steps {
                 sh 'docker-compose up --build -d'
-            }
-
-            steps {
                 sh 'sleep 10'
-            }
-
-            steps {
                 sh './teste-app.sh'
-            }
-
-            steps {
                 sh 'docker-compose down'
             }
         }
 
-        stage('Pushing Image') {
+        stage ('Pushing Image') {
             environment {
                 registryCredential = 'dockerhublogin'
             }
@@ -60,7 +51,7 @@ pipeline {
             }
         }
 
-        stage('Deploying App to Kubernetes') {
+        stage ('Deploying App to Kubernetes') {
             steps {
                 script {
                 kubernetesDeploy(configs: "helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
