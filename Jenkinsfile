@@ -7,6 +7,10 @@ pipeline {
 
     agent { label "cobaia-server-aws" }
 
+    options {
+        skipDefaultCheckout()
+    }
+
     stages {
         stage ('Clean workspace') {
             steps {
@@ -20,8 +24,20 @@ pipeline {
             }
         }
 
+        /*stage ('Sonarqube validation') {
+            steps {
+                script {
+                    scannerHome = tool 'sonar-scanner';
+                }
+                withSonarQubeEnv('sonar-server'){
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=dotnetapp -Dsonar.sources=. -Dsonar.host.url=${env.SONAR_HOST_URL} -Dsonar.login=${env.SONAR_AUTH_TOKEN}"
+                }
+            }
+
+        }*/
+
         stage ('Build image') {
-            steps{
+            steps {
                 script {
                     dockerImage = docker.build dockerimagename
                 }
@@ -42,7 +58,7 @@ pipeline {
                 registryCredential = 'dockerhublogin'
             }
 
-            steps{
+            steps {
                 script {
                     docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
                         dockerImage.push("latest")
@@ -54,7 +70,7 @@ pipeline {
         stage ('Deploying App to Kubernetes') {
             steps {
                 script {
-                kubernetesDeploy(configs: "helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
+                    kubernetesDeploy(configs: "helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
                 }
             }
         }
