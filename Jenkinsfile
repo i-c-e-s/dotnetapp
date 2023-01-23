@@ -69,14 +69,8 @@ pipeline {
 
         stage ('Deploying App to Kubernetes') {
             steps {
-                script {
-                    kubernetesDeploy(configs: "./helm-chart/templates/", kubeconfigId: "kubernetes")
-                }
+                sh 'helm upgrade dotnetapp helm-chart/'
             }
-            
-            /*steps {
-                sh 'kubectl apply -f ./helm-chart/templates/deployment.yaml'
-            }*/
         }
     }
 }
