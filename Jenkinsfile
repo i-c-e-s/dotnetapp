@@ -1,7 +1,7 @@
 pipeline {
 
     environment {
-        dockerimagename = "ices/dotnetapp"
+        dockerimagename = "ices/dotnetapp:v1"
         dockerImage = ""
     }
 
@@ -68,15 +68,15 @@ pipeline {
         }
 
         stage ('Deploying App to Kubernetes') {
-            /*steps {
-                script {
-                    kubernetesDeploy(configs: "helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
-                }
-            }*/
-            
             steps {
-                sh 'kubectl apply -f ./helm-chart/templates/deployment.yaml'
+                script {
+                    kubernetesDeploy(configs: "./helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
+                }
             }
+            
+            /*steps {
+                sh 'kubectl apply -f ./helm-chart/templates/deployment.yaml'
+            }*/
         }
     }
 }

@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: .
-    image: ices/dotnetapp:latest
+    image: ices/dotnetapp:v1
     container_name: dotnetapp
     restart: unless-stopped
     ports:
