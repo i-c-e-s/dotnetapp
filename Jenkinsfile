@@ -69,9 +69,6 @@ pipeline {
 
         stage ('Deploying App to Kubernetes') {
             steps {
-                sh 'whoami'
-                sh 'export KUBECONFIG=/var/jenkins_home/.kube/config'
-                sh 'echo $KUBECONFIG'
                 sh 'helm upgrade dotnetapp helm-chart/'
             }
         }
