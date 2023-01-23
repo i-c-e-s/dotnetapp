@@ -70,7 +70,7 @@ pipeline {
         stage ('Deploying App to Kubernetes') {
             steps {
                 script {
-                    kubernetesDeploy(configs: "./helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
+                    kubernetesDeploy(configs: "./helm-chart/template/deployment.yaml", kubeconfigId: "kubernetes")
                 }
             }
             
