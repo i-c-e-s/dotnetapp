@@ -69,6 +69,7 @@ pipeline {
 
         stage ('Deploying App to Kubernetes') {
             steps {
+                sh 'echo $PWD'
                 sh 'helm upgrade dotnetapp helm-chart/'
             }
         }
