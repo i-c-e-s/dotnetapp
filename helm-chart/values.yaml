@@ -10,7 +10,7 @@ image:
   #repository: sa-saopaulo-1.ocir.io/skybrasil/repo-sky/prd/sacimagename
   repository: ices/dotnetapp
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: "v1"
 
 resources:
   requests:

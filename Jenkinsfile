@@ -5,7 +5,7 @@ pipeline {
         dockerImage = ""
     }
 
-    agent { label "cobaia-server-aws" }
+    agent { label "Built-In Node" }
 
     options {
         skipDefaultCheckout()
@@ -44,7 +44,7 @@ pipeline {
             }
         }
 
-        stage ('test image') {
+        stage ('Test Image') {
             steps {
                 sh 'docker-compose up -d'
                 sh 'sleep 10'
@@ -61,17 +61,21 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-                        dockerImage.push("latest")
+                        dockerImage.push("v1")
                     }
                 }
             }
         }
 
         stage ('Deploying App to Kubernetes') {
-            steps {
+            /*steps {
                 script {
                     kubernetesDeploy(configs: "helm-chart/template/deployment.yml", kubeconfigId: "kubernetes")
                 }
+            }*/
+            
+            steps {
+                sh 'kubectl apply -f ./helm-chart/templates/deployment.yaml'
             }
         }
     }
