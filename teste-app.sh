@@ -4,7 +4,7 @@ wget -q locahost:5083/weatherforecast
 if [ $? -eq 0 ]
 then
     echo 'ok - serviço no ar!'
-elsif [[ $RESULT == *"Number"* ]]
+elif [[ $RESULT == *"Number"* ]]
 then
     echo 'ok - number of visits'
     echo $RESULT
