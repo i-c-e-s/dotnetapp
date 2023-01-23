@@ -6,8 +6,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 70
   # targetMemoryUtilizationPercentage: 80
 
-namespace: dotnetapp
-
 image:
   #repository: sa-saopaulo-1.ocir.io/skybrasil/repo-sky/prd/sacimagename
   repository: ices/dotnetapp
@@ -25,7 +23,7 @@ service:
   port: 8081
   targetPort: 80
 
-applicationPath: /
+applicationPath: /weatherforecast
 dnshost: path.api
 
 istio:
