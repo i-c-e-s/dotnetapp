@@ -16,7 +16,7 @@ pipeline {
 
         stage ('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/i-c-e-s/skyactivationcore'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/i-c-e-s/dotnetapp'
             }
         }
 
