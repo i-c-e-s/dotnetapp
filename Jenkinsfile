@@ -30,7 +30,7 @@ pipeline {
 
         stage ('test image') {
             steps {
-                sh 'docker-compose up --build -d'
+                sh 'docker-compose up -d'
                 sh 'sleep 10'
                 sh './teste-app.sh'
                 sh 'docker-compose down'
