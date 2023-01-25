@@ -7,10 +7,9 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 image:
-  #repository: sa-saopaulo-1.ocir.io/skybrasil/repo-sky/prd/sacimagename
-  repository: localhost:8123/ices/dotnetapp
-  imagePullSecrets: nexus-registry
-  pullPolicy: IfNotPresent
+  repository: 228997217230.dkr.ecr.us-east-1.amazonaws.com/ices/dotnetapp
+  imagePullSecrets: aws
+  pullPolicy: Always
   tag: "latest"
 
 resources:

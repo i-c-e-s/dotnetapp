@@ -67,30 +67,24 @@ pipeline {
         stage ('Pushing Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'nexus-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
+                    /*withCredentials([usernamePassword(credentialsId: 'nexus-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                         sh 'docker login -u $USERNAME -p $PASSWORD ${NEXUS_URL}'
                         sh 'docker tag ices/dotnetapp:latest ${NEXUS_URL}/ices/dotnetapp'
-                        sh 'docker push ${NEXUS_URL}/ices/dotnetapp'
+                        sh 'docker push ${NEXUS_URL}/ices/dotnetapp'*/
+                    withCredentials([
+                        string(credentialsId: "AWS_ACCESS_KEY_ID", variable: "AWS_ACCESS_KEY_ID"),
+                        string(credentialsId: "AWS_SECRET_ACCESS_KEY", variable: "AWS_SECRET_ACCESS_KEY"),
+                        string(credentialsId: "AWS_DEFAULT_REGION", variable: "AWS_DEFAULT_REGION"),
+                        string(credentialsId: "AWS_ECR_URL", variable: "AWS_ECR_URL"),
+                        string(credentialsId: "ECR_REPOSITORY", variable: "ECR_REPOSITORY"),]){
+                        sh "aws configure set aws_access_key_id ${env.AWS_ACCESS_KEY_ID}"
+                        sh "aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}"
+                        sh "aws configure set region ${env.AWS_DEFAULT_REGION}"
+                        sh "aws ecr get-login-password --region ${env.AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${env.AWS_ECR_URL}"
+                        sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
+                        sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
                     }
                 }
-            }
-
-            /*environment {
-                registryCredential = 'dockerhublogin'
-            }
-
-            steps {
-                script {
-                    docker.withRegistry( 'https://registry.hub.docker.com', registryCredential ) {
-                        dockerImage.push("v1")
-                    }
-                }
-            }*/
-        }
-        //deploy da imagem no kubernetes
-        stage ('Deploying App to Kubernetes') {
-            steps {
-                sh 'helm upgrade dotnetapp helm-chart/'
             }
         }
     }
