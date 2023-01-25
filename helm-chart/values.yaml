@@ -8,9 +8,10 @@ autoscaling:
 
 image:
   #repository: sa-saopaulo-1.ocir.io/skybrasil/repo-sky/prd/sacimagename
-  repository: ices/dotnetapp
+  repository: localhost:8123/ices/dotnetapp
+  imagePullSecrets: nexus-registry
   pullPolicy: IfNotPresent
-  tag: "v1"
+  tag: "latest"
 
 resources:
   requests:

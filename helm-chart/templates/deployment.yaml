@@ -19,7 +19,7 @@ spec:
         version: {{ .Values.image.tag | default .Chart.AppVersion }}
     spec:
       imagePullSecrets:
-        - name: sacsecret
+        - name: {{ .Value.imagePullSecrets }}
       serviceAccountName: {{ .Release.Name }}-serviceaccount
       containers:
         - name: {{ .Release.Name }}
