@@ -1,1 +1,1 @@
-# skyactivationcore
+# dotnetapp
