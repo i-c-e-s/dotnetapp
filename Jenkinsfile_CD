@@ -2,7 +2,7 @@ pipeline {
 
     //agente que vai executar o CI
     agent any
-    
+
     //ignorar o default checkout
     options {
         skipDefaultCheckout()
@@ -24,7 +24,7 @@ pipeline {
         //deploy da imagem no kubernetes
         stage ('Deploying App to Kubernetes') {
             steps {
-                sh 'helm upgrade dotnetapp helm-chart/'
+                sh "helm upgrade dotnetapp helm-chart/ --set image.tag=${env.imageTagParameterName_TAG}"
             }
         }
     }
