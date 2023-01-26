@@ -81,7 +81,7 @@ pipeline {
                         sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
                         sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
                         sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:${env.BUILD_NUMBER}"
-                        sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:${env.BUILD_NUMBER}"
+                        sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:v${env.BUILD_NUMBER}"
                     }
                 }
             }
