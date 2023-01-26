@@ -1,0 +1,31 @@
+pipeline {
+
+    //agente que vai executar o CI
+    agent any
+
+    //ignorar o default checkout
+    options {
+        skipDefaultCheckout()
+    }
+
+    stages {
+        //limpeza do workspace
+        stage ('Clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        //checkout do projeto
+        stage ('Checkout') {
+            steps {
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/i-c-e-s/dotnetapp-CD'
+            }
+        }
+        //deploy da imagem no kubernetes
+        stage ('Deploying App to Kubernetes') {
+            steps {
+                sh 'helm upgrade dotnetapp helm-chart/'
+            }
+        }
+    }
+}
