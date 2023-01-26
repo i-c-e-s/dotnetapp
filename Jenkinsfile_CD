@@ -3,6 +3,11 @@ pipeline {
     //agente que vai executar o CI
     agent any
 
+    parameters {
+        imageTag(name: 'DOCKER_IMAGE', description: '',
+                image: 'ices/dotnetapp', filter: '.*', defaultTag: '',
+                registry: 'https://228997217230.dkr.ecr.us-east-1.amazonaws.com', credentialId: 'AWS ECR Registry:aws credentials-US_EAST_1', tagOrder: 'NATURAL')
+  }
     //ignorar o default checkout
     options {
         skipDefaultCheckout()
@@ -24,7 +29,7 @@ pipeline {
         //deploy da imagem no kubernetes
         stage ('Deploying App to Kubernetes') {
             steps {
-                sh "echo ${env.imageTagParameterName_TAG}"
+                sh "echo $DOCKER_IMAGE_TAG"
                 sh "helm upgrade dotnetapp helm-chart/ --set image.tag=v38"
             }
         }
