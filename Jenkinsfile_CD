@@ -6,7 +6,7 @@ pipeline {
     parameters {
         imageTag(name: 'DOCKER_IMAGE', description: '',
                 image: 'ices/dotnetapp', filter: '.*', defaultTag: '',
-                registry: 'https://228997217230.dkr.ecr.us-east-1.amazonaws.com', credentialId: 'AWS ECR Registry:aws credentials-US_EAST_1', tagOrder: 'NATURAL')
+                registry: 'https://228997217230.dkr.ecr.us-east-1.amazonaws.com', credentialId: 'Amazon ECR Registry:aws credentials-US_EAST_1', tagOrder: 'NATURAL')
   }
     //ignorar o default checkout
     options {
