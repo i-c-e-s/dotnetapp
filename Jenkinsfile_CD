@@ -18,7 +18,7 @@ pipeline {
         //checkout do projeto
         stage ('Checkout') {
             steps {
-                git branch: 'main', credentialsId: 'github', url: 'https://github.com/i-c-e-s/dotnetapp-CD'
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/i-c-e-s/dotnetapp'
             }
         }
         //deploy da imagem no kubernetes
