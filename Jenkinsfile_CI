@@ -79,7 +79,7 @@ pipeline {
                         sh 'docker tag $dockerimagename $AWS_ECR_URL/$ECR_REPOSITORY:latest'
                         sh 'docker push $AWS_ECR_URL/$ECR_REPOSITORY:latest'
                         sh 'docker tag $dockerimagename $AWS_ECR_URL/$ECR_REPOSITORY:v$BUILD_NUMBER'
-                        sh 'docker push $AWS_ECR_URL}/$ECR_REPOSITORY:v$BUILD_NUMBER'
+                        sh 'docker push $AWS_ECR_URL/$ECR_REPOSITORY:v$BUILD_NUMBER'
                         /*string(credentialsId: "AWS_ACCESS_KEY_ID", variable: "AWS_ACCESS_KEY_ID"),
                         string(credentialsId: "AWS_SECRET_ACCESS_KEY", variable: "AWS_SECRET_ACCESS_KEY"),
                         string(credentialsId: "AWS_DEFAULT_REGION", variable: "AWS_DEFAULT_REGION"),
