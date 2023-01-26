@@ -3,8 +3,6 @@ pipeline {
     //variáveis de ambiente
     environment {
         dockerimagename = "ices/dotnetapp"
-        //TAG = "${env.BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(15)
-        dockerImage = ""
     }
 
     //agente que vai executar o CI
@@ -78,9 +76,9 @@ pipeline {
                         sh "aws configure set aws_secret_access_key ${env.AWS_SECRET_ACCESS_KEY}"
                         sh "aws configure set region ${env.AWS_DEFAULT_REGION}"
                         sh "aws ecr get-login-password --region ${env.AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${env.AWS_ECR_URL}"
-                        sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
+                        sh "docker tag ${env.dockerimagename} ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
                         sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
-                        sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:${env.BUILD_NUMBER}"
+                        sh "docker tag ${env.dockerimagename} ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:v${env.BUILD_NUMBER}"
                         sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:v${env.BUILD_NUMBER}"
                     }
                 }
