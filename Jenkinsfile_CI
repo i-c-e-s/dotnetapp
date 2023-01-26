@@ -3,6 +3,8 @@ pipeline {
     //variáveis de ambiente
     environment {
         dockerimagename = "ices/dotnetapp"
+        TAG = "${env.BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(15)
+        VERSION = "${env.TAG}"
         dockerImage = ""
     }
 
@@ -67,10 +69,6 @@ pipeline {
         stage ('Pushing Docker Image') {
             steps {
                 script {
-                    /*withCredentials([usernamePassword(credentialsId: 'nexus-user', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
-                        sh 'docker login -u $USERNAME -p $PASSWORD ${NEXUS_URL}'
-                        sh 'docker tag ices/dotnetapp:latest ${NEXUS_URL}/ices/dotnetapp'
-                        sh 'docker push ${NEXUS_URL}/ices/dotnetapp'*/
                     withCredentials([
                         string(credentialsId: "AWS_ACCESS_KEY_ID", variable: "AWS_ACCESS_KEY_ID"),
                         string(credentialsId: "AWS_SECRET_ACCESS_KEY", variable: "AWS_SECRET_ACCESS_KEY"),
@@ -83,6 +81,8 @@ pipeline {
                         sh "aws ecr get-login-password --region ${env.AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${env.AWS_ECR_URL}"
                         sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
                         sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:latest"
+                        sh "docker tag ices/dotnetapp ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:${env.TAG}"
+                        sh "docker push ${env.AWS_ECR_URL}/${env.ECR_REPOSITORY}:${env.TAG}"
                     }
                 }
             }
