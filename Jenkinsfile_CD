@@ -30,8 +30,8 @@ pipeline {
         stage ('Deploying App to Kubernetes') {
                 steps {
                     withCredentials([file(credentialsId: 'kubeconfig', variable: 'MY_KUBECONFIG')]){
-                    sh 'kubectl config --kubeconfig="$MY_KUBECONFIG"'
-                    sh 'helm upgrade --install dotnetapp helm-chart/ --set image.tag=$DOCKER_IMAGE_TAG'
+                        sh '$KUBECONFIG=$MY_KUBECONFIG'
+                        sh 'helm upgrade --install dotnetapp helm-chart/ --set image.tag=$DOCKER_IMAGE_TAG'
                 }
             }
         }
