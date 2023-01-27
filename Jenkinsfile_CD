@@ -29,7 +29,7 @@ pipeline {
         //deploy da imagem no kubernetes
         stage ('Deploying App to Kubernetes') {
             steps {
-                sh "helm upgrade dotnetapp helm-chart/ --set image.tag=$DOCKER_IMAGE_TAG"
+                sh "helm upgrade --install dotnetapp helm-chart/ --set image.tag=$DOCKER_IMAGE_TAG"
             }
         }
     }
