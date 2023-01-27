@@ -29,7 +29,7 @@ pipeline {
         //deploy da imagem no kubernetes
         stage ('Deploying App to Kubernetes') {
                 steps {
-                    withCredentials([file(credentialsId: 'kubernetes', variable: 'MY_KUBECONFIG')]){
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'MY_KUBECONFIG')]){
                     sh "helm upgrade --install dotnetapp helm-chart/ --kubeconfig $MY_KUBECONFIG --set image.tag=$DOCKER_IMAGE_TAG"
                 }
             }
