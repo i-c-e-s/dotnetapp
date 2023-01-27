@@ -3,6 +3,11 @@ pipeline {
     //agente que vai executar o CI
     agent any
 
+    environment {
+        //kubeconfig salvo nas credenciais do Jenkins
+        MY_KUBECONFIG = credentials('kubernetes')
+    }
+
     parameters {
         imageTag(name: 'DOCKER_IMAGE', description: '',
                 image: 'ices/dotnetapp', filter: '.*', defaultTag: '',
@@ -29,7 +34,7 @@ pipeline {
         //deploy da imagem no kubernetes
         stage ('Deploying App to Kubernetes') {
             steps {
-                sh "helm upgrade --install dotnetapp helm-chart/ --set image.tag=$DOCKER_IMAGE_TAG"
+                sh "helm upgrade --install dotnetapp helm-chart/ --kubeconfig $MY_KUBECONFIG --set image.tag=$DOCKER_IMAGE_TAG"
             }
         }
     }
